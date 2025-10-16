@@ -77,14 +77,13 @@ const Signup = () => {
             </button>
           </form>
 
-          <p style={styles.signInLink}>Sign in</p>
+          <p style={styles.signInLink}> Have an already Account! Sign in</p>
         </div>
       </div>
     </div>
   );
 };
 
-// All the styles are collected in this object for better organization
 const styles = {
   container: {
     display: "flex",
@@ -102,7 +101,7 @@ const styles = {
   },
   rightPanel: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#929ba7ff",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

@@ -1,16 +1,33 @@
 import React from "react";
-// import Home from "./Home";
-// import Signup from "./Signup";
-// import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import PersonalDetails from "./pages/Personal_details";
-import LiveClass from "./pages/Live_class";
+// NOTICE: BrowserRouter as Router is removed from this import
+import { Routes, Route } from "react-router-dom";
 
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Courses from "./pages/Course";
+import LiveClass from "./pages/LiveClass";
+import Messages from "./components/Messages_page";
+import Reviews from "./pages/Reviews";
+import PersonalDetails from "./pages/PersonalDetails";
+import Signup from "./pages/Signup";
+import About from "./components/About";
+import Contact from "./components/Contact";
 function App() {
   return (
-    <>
-      <LiveClass />
-    </>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/courses" element={<Courses />} />
+      <Route path="/live-class" element={<LiveClass />} />
+      <Route path="/messages" element={<Messages />} />
+      <Route path="/reviews" element={<Reviews />} />
+      <Route path="/personalDetails" element={<PersonalDetails />} />
+      <Route path="/Signup" element={<Signup />} />
+      <Route path="/About" element={<About />} />
+      <Route path="/Contact" element={<Contact />} />
+    </Routes>
   );
 }
 

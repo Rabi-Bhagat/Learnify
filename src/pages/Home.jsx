@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import InfoCard from "../components/Infocard";
+import Footer from "../components/Footer";
+import HeroSection from "../components/HeroSection";
 
-// Importing icons from the react-icons library
 import {
   FaBookOpen,
   FaUserFriends,
@@ -16,42 +18,6 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
-// Reusable component for feature/step cards to avoid repeating code
-const InfoCard = ({ icon, title, text }) => (
-  <div style={styles.card}>
-    <div style={styles.iconCircle}>{icon}</div>
-    <h3 style={styles.cardTitle}>{title}</h3>
-    <p style={styles.cardText}>{text}</p>
-  </div>
-);
-
-// Your original Hero section code, now as its own component
-const HeroSection = () => (
-  <div style={styles.heroContainer}>
-    <div style={{ maxWidth: "50%" }}>
-      <h1 style={{ color: "white", fontSize: "4rem", marginBottom: "20px" }}>
-        Learnify Website
-      </h1>
-      <h2
-        style={{
-          color: "#4CAF50",
-          fontSize: "2.5rem",
-          letterSpacing: "2px",
-          marginBottom: "40px",
-        }}
-      >
-        LANGUAGE
-      </h2>
-      <button style={styles.heroButton}>Start Today</button>
-    </div>
-    <div style={{ flexShrink: 0 }}>
-      {/* Make sure you have an image named a.png in your public folder */}
-      <img src="/a.png" alt="Learnify" style={styles.heroImage} />
-    </div>
-  </div>
-);
-
-// "Why Choose Learnify?" Section
 const WhyChooseUs = () => (
   <section style={styles.sectionLight}>
     <h2 style={styles.sectionTitle}>Why choose Learnify?</h2>
@@ -79,7 +45,6 @@ const WhyChooseUs = () => (
   </section>
 );
 
-// "How Learnify Works" Section
 const HowItWorks = () => (
   <section style={styles.sectionLight}>
     <h2 style={styles.sectionTitle}>How Learnify Works</h2>
@@ -107,7 +72,6 @@ const HowItWorks = () => (
   </section>
 );
 
-// "Ready to Start" Call-to-Action Section
 const ReadyToStart = () => (
   <section style={styles.sectionLight}>
     <h2 style={styles.sectionTitle}>Ready to Start Your Language Journey?</h2>
@@ -116,42 +80,21 @@ const ReadyToStart = () => (
       together.
     </p>
     <div style={styles.buttonContainer}>
-      <button style={{ ...styles.ctaButton, ...styles.ctaButtonPrimary }}>
-        <FaUserPlus style={{ marginRight: "8px" }} /> Sign Up
-      </button>
-      <button style={{ ...styles.ctaButton, ...styles.ctaButtonSecondary }}>
-        <FaKey style={{ marginRight: "8px" }} /> Log In to Your Account
-      </button>
+      <Link to="/Signup">
+        <button style={{ ...styles.ctaButton, ...styles.ctaButtonPrimary }}>
+          <FaUserPlus style={{ marginRight: "8px" }} /> Sign Up
+        </button>
+      </Link>
+
+      <Link to="/login">
+        <button style={{ ...styles.ctaButton, ...styles.ctaButtonSecondary }}>
+          <FaKey style={{ marginRight: "8px" }} /> Log In to Your Account
+        </button>
+      </Link>
     </div>
   </section>
 );
 
-// Footer Section
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="/resources" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="/legal" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div style={styles.socialIcons}>
-      <a href="#" style={styles.socialIconLink}>
-        <FaFacebook size={20} />
-      </a>
-      <a href="#" style={styles.socialIconLink}>
-        <FaLinkedin size={20} />
-      </a>
-      <a href="#" style={styles.socialIconLink}>
-        <FaTwitter size={20} />
-      </a>
-    </div>
-  </footer>
-);
-
-// Main Home Component that ties everything together
 const Home = () => {
   return (
     <>
@@ -169,9 +112,7 @@ const Home = () => {
 
 export default Home;
 
-// Centralized object for all CSS styles for better organization
 const styles = {
-  // Hero Section
   heroContainer: {
     display: "flex",
     alignItems: "center",
@@ -196,7 +137,7 @@ const styles = {
     height: "auto",
     borderRadius: "15px",
   },
-  // General Section Styles
+
   sectionLight: {
     backgroundColor: "#f9f9f9",
     padding: "80px 40px",
@@ -214,7 +155,7 @@ const styles = {
     maxWidth: "800px",
     margin: "0 auto 50px auto",
   },
-  // Card Styles
+
   cardContainer: {
     display: "flex",
     justifyContent: "center",
@@ -251,7 +192,7 @@ const styles = {
     color: "#777",
     lineHeight: 1.6,
   },
-  // CTA Button Styles
+
   buttonContainer: {
     display: "flex",
     justifyContent: "center",
@@ -276,7 +217,7 @@ const styles = {
     backgroundColor: "transparent",
     color: "#6a0dad",
   },
-  // Footer Styles
+
   footer: {
     backgroundColor: "#333",
     color: "white",
