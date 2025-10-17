@@ -1,5 +1,9 @@
 import React from "react";
 // Importing the necessary icons from Font Awesome
+import { Link } from "react-router-dom";
+import hirdentImage from "../assets/hirdent.jpg";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 import {
   FaTachometerAlt,
   FaBook,
@@ -14,41 +18,6 @@ import {
 } from "react-icons/fa";
 
 // Reusable components from the dashboard layout
-const Sidebar = () => (
-  <aside style={styles.sidebar}>
-    <div style={styles.sidebarTop}>
-      {/* Assuming a logo or title here */}
-      <h2 style={{ textAlign: "center", marginBottom: "40px" }}>Learnify</h2>
-      <nav>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li style={styles.navItem}>
-            <FaTachometerAlt />
-            <span style={styles.navText}>Dashboard</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaBook />
-            <span style={styles.navText}>Courses</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaChalkboardTeacher />
-            <span style={styles.navText}>Live Class room</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaEnvelope />
-            <span style={styles.navText}>Messages</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaStar />
-            <span style={styles.navText}>Reviews</span>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <button style={styles.logoutButton}>
-      <FaSignOutAlt /> <span style={styles.navText}>Log out</span>
-    </button>
-  </aside>
-);
 
 const Header = () => (
   <header style={styles.header}>
@@ -61,34 +30,15 @@ const Header = () => (
       <button style={styles.settingsButton}>Setting...</button>
       <div style={styles.avatar}>A</div>
     </div>
-    <button style={styles.backButton}>
-      <FaArrowLeft style={{ marginRight: "8px" }} /> Back
-    </button>
-  </header>
-);
 
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="#" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div style={styles.socialIcons}>
-      <a href="#" style={styles.footerLink}>
-        <FaFacebook />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaLinkedin />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
+    <a href="Dashboard" style={styles.backButton}>
+      Back
+    </a>
+
+    {/* <button style={styles.backButton}>
+      <FaArrowLeft style={{ marginRight: "8px" }} /> Back
+    </button> */}
+  </header>
 );
 
 // The main content for this specific page
@@ -98,7 +48,7 @@ const PersonalDetailsContent = () => (
       {/* User Profile Card */}
       <div style={{ ...styles.card, ...styles.profileCard }}>
         <img
-          src="https://via.placeholder.com/100"
+          src={hirdentImage}
           alt="User Profile"
           style={styles.profileImage}
         />
@@ -121,8 +71,8 @@ const PersonalDetailsContent = () => (
       {/* Learning Language Card */}
       <div style={{ ...styles.card, ...styles.learningCard }}>
         <h3>Learning Language:</h3>
-        <p style={styles.languageText}>Franch</p>
-        <p style={styles.languageText}>Spanish</p>
+        <p style={styles.languageText}>Bhojpuri</p>
+        <p style={styles.languageText}>Chineese</p>
       </div>
     </div>
 

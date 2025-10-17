@@ -1,4 +1,14 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+
+// Import images for the other participants
+import mainUserImage from "../assets/e.jpg";
+import user2Image from "../assets/a.jpg";
+import user3Image from "../assets/b.jpg";
+import user4Image from "../assets/c.jpg";
+import user5Image from "../assets/g.jpg";
+
 // Importing icons from Font Awesome
 import {
   FaMicrophoneSlash,
@@ -12,57 +22,40 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
+// --- SOURCE 2: Create a list of your other participants ---
+const otherParticipants = [
+  { id: 2, image: user2Image },
+  { id: 3, image: user3Image },
+  { id: 4, image: user4Image },
+  { id: 5, image: user5Image },
+];
+
 // --- Reusable Components ---
 
 // Header Component
 const Header = () => (
   <header style={styles.header}>
     <nav style={styles.nav}>
-      <a href="#" style={styles.navLink}>
+      <Link to="/Dashboard" style={styles.navLink}>
         Home
-      </a>
-      <a href="#" style={styles.navLink}>
+      </Link>
+      <Link to="/Contact" style={styles.navLink}>
         Contact
-      </a>
-      <a href="#" style={styles.navLink}>
+      </Link>
+      <Link to="/about" style={styles.navLink}>
         About
-      </a>
+      </Link>
     </nav>
     <button style={styles.joinButton}>Join</button>
   </header>
 );
 
-// Footer Component
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="#" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div style={styles.socialIcons}>
-      <a href="#" style={styles.footerLink}>
-        <FaFacebook />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaLinkedin />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
-);
-
 // Video Participant Tile
-const VideoParticipant = ({ isMain = false }) => (
+const VideoParticipant = ({ isMain = false, imageSrc }) => (
   <div style={isMain ? styles.mainVideo : styles.thumbnailVideo}>
-    {/* In a real app, a <video> tag would go here */}
     <img
-      src={`https://via.placeholder.com/${isMain ? "800x450" : "200x112"}`}
+      // This will now use the specific image source passed to it
+      src={imageSrc}
       style={{
         width: "100%",
         height: "100%",
@@ -74,7 +67,6 @@ const VideoParticipant = ({ isMain = false }) => (
   </div>
 );
 
-// Control Bar for Video
 const ControlBar = () => (
   <div style={styles.controlBar}>
     <button style={styles.controlButton}>
@@ -136,6 +128,7 @@ const ChatPanel = () => {
           style={styles.chatInput}
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Type a message..."
         />
         <button type="submit" style={styles.sendButton}>
           Send
@@ -153,12 +146,13 @@ const LiveClass = () => {
       <main style={styles.mainContent}>
         {/* Left Panel: Video Conference Area */}
         <div style={styles.videoPanel}>
-          <VideoParticipant isMain={true} />
+          {/* SOURCE 3: The main participant uses their specific image */}
+          <VideoParticipant isMain={true} imageSrc={mainUserImage} />
           <div style={styles.thumbnailContainer}>
-            <VideoParticipant />
-            <VideoParticipant />
-            <VideoParticipant />
-            <VideoParticipant />
+            {/* Generating 4 unique participants from your list */}
+            {otherParticipants.map((p) => (
+              <VideoParticipant key={p.id} imageSrc={p.image} />
+            ))}
           </div>
           <ControlBar />
         </div>
@@ -176,7 +170,8 @@ const styles = {
   pageContainer: {
     display: "flex",
     flexDirection: "column",
-    minHeight: "100vh",
+    // --- FIX 1: Lock the container height to the screen height ---
+    height: "100vh",
     backgroundColor: "#000",
     color: "#fff",
     fontFamily: "sans-serif",
@@ -203,6 +198,8 @@ const styles = {
     display: "flex",
     padding: "20px",
     gap: "20px",
+    // --- FIX 2: Prevent this section from overflowing ---
+    overflow: "hidden",
   },
   videoPanel: {
     flex: 3,
@@ -213,7 +210,12 @@ const styles = {
     padding: "15px",
     borderRadius: "12px",
   },
-  mainVideo: { flex: 1, borderRadius: "8px", backgroundColor: "#333" },
+  mainVideo: {
+    flex: 1,
+    borderRadius: "8px",
+    backgroundColor: "#333",
+    minHeight: "300px",
+  },
   thumbnailContainer: {
     display: "flex",
     justifyContent: "center",
@@ -233,6 +235,7 @@ const styles = {
     backgroundColor: "#2c2c2e",
     padding: "10px",
     borderRadius: "8px",
+    marginTop: "auto", // Pushes the control bar to the bottom of the video panel
   },
   controlButton: {
     background: "none",
@@ -253,8 +256,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     color: "#000",
+    minWidth: "300px", // Prevents the chat from getting too squished
   },
-  chatHeader: { padding: "15px", borderBottom: "1px solid #ddd" },
+  chatHeader: { padding: "15px", borderBottom: "1px solid #ddd", margin: 0 },
   chatMessages: { flex: 1, padding: "15px", overflowY: "auto" },
   messageWrapper: {
     display: "flex",
@@ -300,15 +304,6 @@ const styles = {
     cursor: "pointer",
     fontWeight: "bold",
   },
-  footer: {
-    padding: "20px 50px",
-    backgroundColor: "#1a1a1a",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  footerLink: { color: "#999", textDecoration: "none", margin: "0 10px" },
-  socialIcons: { display: "flex", gap: "10px" },
 };
 
 export default LiveClass;

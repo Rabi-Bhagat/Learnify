@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Course";
 import LiveClass from "./pages/LiveClass";
-import Messages from "./components/Messages_page";
+import MessagesPage from "./components/Messages_page";
 import Reviews from "./pages/Reviews";
 import PersonalDetails from "./pages/PersonalDetails";
 import Signup from "./pages/Signup";
@@ -16,6 +16,8 @@ import Contact from "./components/Contact";
 import Resources from "./components/Resources";
 import Legal from "./components/Legal";
 import Footer from "./components/Footer";
+import Sidebar from "./components/Sidebar";
+
 function App() {
   return (
     <Routes>
@@ -24,7 +26,7 @@ function App() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/courses" element={<Courses />} />
       <Route path="/live-class" element={<LiveClass />} />
-      <Route path="/messages" element={<Messages />} />
+      <Route path="/messages" element={<MessagesPage />} />
       <Route path="/reviews" element={<Reviews />} />
       <Route path="/personalDetails" element={<PersonalDetails />} />
       <Route path="/Signup" element={<Signup />} />

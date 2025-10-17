@@ -1,6 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom"; // 1. IMPORT the Link component
-import hiedrntImage from "../assets/hirdent.jpg";
+// import hirdentImage from "../assets/hirdent.jpg";
+import PersonalDetails from "./PersonalDetails";
+import Sidebar from "../components/Sidebar";
+import DashboardHeader from "../components/Dashboard_header";
+import Footer from "../components/Footer";
+import DashboardMainComponent from "../components/Dashboardmaincomponent";
 import {
   FaTachometerAlt,
   FaBook,
@@ -89,151 +94,19 @@ const languages = [
   "Russian",
 ];
 
-// Sub-components for the Dashboard
-const Sidebar = () => (
-  <aside style={styles.sidebar}>
-    <div style={styles.sidebarTop}>
-      <h2 style={styles.logo}>Learnify</h2>
-      <div>
-        <div style={styles.navItemActive}>
-          <FaTachometerAlt /> <span style={styles.navText}>Dashboard</span>
-        </div>
-        {navLinks.map((link) => (
-          <Link to={link.to} key={link.text} style={{ textDecoration: "none" }}>
-            <div style={styles.navItem}>
-              {link.icon} <span style={styles.navText}>{link.text}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-    <button style={styles.logoutButton}>
-      <FaSignOutAlt /> <span style={styles.navText}>Log out</span>
-    </button>
-  </aside>
-);
-
-const Header = () => (
-  <header style={styles.header}>
-    <input
-      type="text"
-      placeholder="Search your language partner..."
-      style={styles.searchInput}
-    />
-    <div style={styles.headerRight}>
-      <a href="/profile" style={styles.settingsButton}>
-        Setting...
-      </a>
-      <div style={styles.avatar}>A</div>
-    </div>
-  </header>
-);
-
-const MainContent = () => (
-  <main style={styles.mainContent}>
-    {/* 2. WRAP the entire profile card in a <Link> that points to your profile page */}
-    <Link to="/profile" style={styles.profileLink}>
-      <div style={{ ...styles.card, ...styles.profileCard }}>
-        <img src={hiedrntImage} alt="User" style={styles.profileImage} />
-        <div>
-          <h6>Sujan Subedi</h6>
-          <h6>Fluent in : Nepali and Bhojpuri</h6>
-          <h6>Learning : Madrasi</h6>
-          <h6>1 Session Completed</h6>
-        </div>
-      </div>
-    </Link>
-
-    {/* Stat Cards */}
-    <section style={styles.gridThree}>
-      {statCards.map((card, index) => (
-        <div key={index} style={styles.card}>
-          {card.icon}
-          <h4>{card.title}</h4>
-          <p style={{ color: "#999" }}>{card.subtitle}</p>
-        </div>
-      ))}
-    </section>
-
-    {/* Pricing Plans */}
-    <section style={styles.gridThree}>
-      {pricingPlans.map((plan, index) => (
-        <div key={index} style={{ ...styles.card, ...styles.pricingCard }}>
-          <h4>{plan.title}</h4>
-          <h2 style={styles.price}>{plan.price}</h2>
-          <ul style={styles.featuresList}>
-            {plan.features.map((feature, i) => (
-              <li key={i}>{feature}</li>
-            ))}
-          </ul>
-          <button style={styles.selectPlanButton}>Select This Plan</button>
-        </div>
-      ))}
-    </section>
-
-    {/* Language Grid */}
-    <section style={styles.gridThree}>
-      {languages.map((lang, index) => (
-        <div key={index} style={{ ...styles.card, ...styles.languageCard }}>
-          <h4>{lang}</h4>
-        </div>
-      ))}
-    </section>
-  </main>
-);
-
 // The main Dashboard component that brings everything together
 const Dashboard = () => {
   return (
     <div style={styles.dashboardContainer}>
       <Sidebar />
       <div style={styles.mainWrapper}>
-        <Header />
-        <MainContent />
+        <DashboardHeader />
+        <DashboardMainComponent />
         <Footer />
       </div>
     </div>
   );
 };
-
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <Link to="/resources" style={styles.footerLink}>
-        Resources
-      </Link>
-      <Link to="/legal" style={styles.footerLink}>
-        Legal
-      </Link>
-    </div>
-    <div style={styles.socialIcons}>
-      <a
-        href="https://facebook.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={styles.footerLink}
-      >
-        <FaFacebook />
-      </a>
-      <a
-        href="https://linkedin.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={styles.footerLink}
-      >
-        <FaLinkedin />
-      </a>
-      <a
-        href="https://twitter.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        style={styles.footerLink}
-      >
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
-);
 
 // Centralized styles object
 const styles = {
@@ -244,18 +117,7 @@ const styles = {
     minHeight: "100vh",
     fontFamily: "sans-serif",
   },
-  sidebar: {
-    width: "250px",
-    backgroundColor: "#27293d",
-    padding: "20px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-  },
-  logo: {
-    textAlign: "center",
-    marginBottom: "40px",
-  },
+
   navItem: {
     display: "flex",
     alignItems: "center",
@@ -295,47 +157,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
   },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "20px",
-    backgroundColor: "#27293d",
-    borderBottom: "1px solid #333",
-  },
-  searchInput: {
-    backgroundColor: "transparent",
-    color: "#fff",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    width: "300px",
-    marginRight: "20px",
-    border: "1px solid #4a4a6a",
-  },
-  headerRight: {
-    display: "flex",
-    alignItems: "center",
-  },
-  settingsButton: {
-    background: "none",
-    border: "1px solid #4a4a6a",
-    color: "#fff",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    marginRight: "20px",
-    textDecoration: "none",
-  },
-  avatar: {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    backgroundColor: "#4a4a6a",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold",
-  },
+
   mainContent: {
     padding: "20px",
     overflowY: "auto",
@@ -399,22 +221,6 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100px",
-  },
-  footer: {
-    padding: "20px",
-    backgroundColor: "#27293d",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  footerLink: {
-    color: "#999",
-    textDecoration: "none",
-    margin: "0 10px",
-  },
-  socialIcons: {
-    display: "flex",
-    gap: "10px",
   },
 };
 
