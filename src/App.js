@@ -15,6 +15,7 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 import Resources from "./components/Resources";
 import Legal from "./components/Legal";
+import Footer from "./components/Footer";
 function App() {
   return (
     <Routes>

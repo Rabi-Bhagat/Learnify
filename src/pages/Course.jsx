@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // Import icons from Font Awesome
 import { FaFacebook, FaLinkedin, FaTwitter, FaArrowLeft } from "react-icons/fa";
 
@@ -126,9 +127,9 @@ const CoursesPage = () => {
     <div style={styles.pageContainer}>
       <Header />
       <main style={styles.mainContent}>
-        <button style={styles.backButton}>
+        <Link to="/dashboard" style={styles.backButton}>
           <FaArrowLeft style={{ marginRight: "8px" }} /> Back
-        </button>
+        </Link>
         <div style={styles.courseGrid}>
           {coursesData.map((course, index) => (
             <CourseCard key={index} course={course} />
@@ -250,6 +251,20 @@ const styles = {
     borderRadius: "8px",
     cursor: "pointer",
   },
+
+  backButton: {
+    background: "none",
+    border: "1px solid #4a4a6a",
+    color: "#fff",
+    padding: "10px 20px",
+    borderRadius: "8px",
+    cursor: "pointer",
+    marginBottom: "20px",
+    display: "inline-flex", // Use inline-flex to keep it from stretching full-width
+    alignItems: "center",
+    textDecoration: "none", // Remove the default underline from the link
+  },
+
   footer: {
     padding: "20px 30px",
     backgroundColor: "#27293d",

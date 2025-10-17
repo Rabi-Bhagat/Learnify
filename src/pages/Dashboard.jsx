@@ -1,5 +1,6 @@
 import React from "react";
-// Importing a variety of icons from the Font Awesome set in react-icons
+import { Link } from "react-router-dom"; // 1. IMPORT the Link component
+import hiedrntImage from "../assets/hirdent.jpg";
 import {
   FaTachometerAlt,
   FaBook,
@@ -15,13 +16,11 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
-// Data for our components to keep the JSX clean
 const navLinks = [
-  { icon: <FaTachometerAlt />, text: "Dashboard" },
-  { icon: <FaBook />, text: "Courses" },
-  { icon: <FaChalkboardTeacher />, text: "Live Class room" },
-  { icon: <FaEnvelope />, text: "Messages" },
-  { icon: <FaStar />, text: "Reviews" },
+  { to: "/courses", icon: <FaBook />, text: "Courses" },
+  { to: "/live-class", icon: <FaChalkboardTeacher />, text: "Live Class room" },
+  { to: "/messages", icon: <FaEnvelope />, text: "Messages" },
+  { to: "/reviews", icon: <FaStar />, text: "Reviews" },
 ];
 
 const statCards = [
@@ -95,15 +94,18 @@ const Sidebar = () => (
   <aside style={styles.sidebar}>
     <div style={styles.sidebarTop}>
       <h2 style={styles.logo}>Learnify</h2>
-      <nav>
-        <ul>
-          {navLinks.map((link, index) => (
-            <li key={index} style={styles.navItem}>
+      <div>
+        <div style={styles.navItemActive}>
+          <FaTachometerAlt /> <span style={styles.navText}>Dashboard</span>
+        </div>
+        {navLinks.map((link) => (
+          <Link to={link.to} key={link.text} style={{ textDecoration: "none" }}>
+            <div style={styles.navItem}>
               {link.icon} <span style={styles.navText}>{link.text}</span>
-            </li>
-          ))}
-        </ul>
-      </nav>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
     <button style={styles.logoutButton}>
       <FaSignOutAlt /> <span style={styles.navText}>Log out</span>
@@ -119,7 +121,9 @@ const Header = () => (
       style={styles.searchInput}
     />
     <div style={styles.headerRight}>
-      <button style={styles.settingsButton}>Setting...</button>
+      <a href="/profile" style={styles.settingsButton}>
+        Setting...
+      </a>
       <div style={styles.avatar}>A</div>
     </div>
   </header>
@@ -127,18 +131,18 @@ const Header = () => (
 
 const MainContent = () => (
   <main style={styles.mainContent}>
-    {/* User Profile Card */}
-    <div style={{ ...styles.card, ...styles.profileCard }}>
-      <img
-        src="https://via.placeholder.com/60"
-        alt="User"
-        style={styles.profileImage}
-      />
-      <div>
-        <h4>Thomas Kaluw...</h4>
-        <p style={{ color: "#999" }}>Tutor in Spanish, English</p>
+    {/* 2. WRAP the entire profile card in a <Link> that points to your profile page */}
+    <Link to="/profile" style={styles.profileLink}>
+      <div style={{ ...styles.card, ...styles.profileCard }}>
+        <img src={hiedrntImage} alt="User" style={styles.profileImage} />
+        <div>
+          <h6>Sujan Subedi</h6>
+          <h6>Fluent in : Nepali and Bhojpuri</h6>
+          <h6>Learning : Madrasi</h6>
+          <h6>1 Session Completed</h6>
+        </div>
       </div>
-    </div>
+    </Link>
 
     {/* Stat Cards */}
     <section style={styles.gridThree}>
@@ -178,30 +182,6 @@ const MainContent = () => (
   </main>
 );
 
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="#" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div style={styles.socialIcons}>
-      <a href="#" style={styles.footerLink}>
-        <FaFacebook />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaLinkedin />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
-);
-
 // The main Dashboard component that brings everything together
 const Dashboard = () => {
   return (
@@ -215,6 +195,45 @@ const Dashboard = () => {
     </div>
   );
 };
+
+const Footer = () => (
+  <footer style={styles.footer}>
+    <div>
+      <Link to="/resources" style={styles.footerLink}>
+        Resources
+      </Link>
+      <Link to="/legal" style={styles.footerLink}>
+        Legal
+      </Link>
+    </div>
+    <div style={styles.socialIcons}>
+      <a
+        href="https://facebook.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={styles.footerLink}
+      >
+        <FaFacebook />
+      </a>
+      <a
+        href="https://linkedin.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={styles.footerLink}
+      >
+        <FaLinkedin />
+      </a>
+      <a
+        href="https://twitter.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={styles.footerLink}
+      >
+        <FaTwitter />
+      </a>
+    </div>
+  </footer>
+);
 
 // Centralized styles object
 const styles = {
@@ -244,6 +263,17 @@ const styles = {
     listStyle: "none",
     cursor: "pointer",
     borderRadius: "8px",
+    color: "#a9a9b2",
+    transition: "background-color 0.2s",
+  },
+  navItemActive: {
+    display: "flex",
+    alignItems: "center",
+    padding: "15px 10px",
+    listStyle: "none",
+    borderRadius: "8px",
+    backgroundColor: "#3a3a5a",
+    color: "#fff",
   },
   navText: {
     marginLeft: "15px",
@@ -274,12 +304,13 @@ const styles = {
     borderBottom: "1px solid #333",
   },
   searchInput: {
-    border: "1px solid #4a4a6a",
     backgroundColor: "transparent",
     color: "#fff",
     padding: "10px 15px",
     borderRadius: "8px",
     width: "300px",
+    marginRight: "20px",
+    border: "1px solid #4a4a6a",
   },
   headerRight: {
     display: "flex",
@@ -293,6 +324,7 @@ const styles = {
     borderRadius: "8px",
     cursor: "pointer",
     marginRight: "20px",
+    textDecoration: "none",
   },
   avatar: {
     width: "40px",
@@ -320,14 +352,24 @@ const styles = {
     padding: "20px",
     borderRadius: "10px",
   },
+  // 3. ADD a style for the Link to remove the underline and inherit color
+  profileLink: {
+    textDecoration: "none",
+    color: "inherit",
+  },
   profileCard: {
     display: "flex",
     alignItems: "center",
     gap: "15px",
     marginBottom: "20px",
+    cursor: "pointer", // Add a pointer cursor to indicate it's clickable
+    backgroundColor: "#3a3a5a",
   },
   profileImage: {
+    width: "80px",
+    height: "80px",
     borderRadius: "50%",
+    objectFit: "cover",
   },
   pricingCard: {
     textAlign: "center",
