@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import DashboardHeader from "../components/Dashboard_header";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 // Import icons from Font Awesome
 import {
   FaTachometerAlt,
@@ -45,74 +48,6 @@ const initialMessages = {
 };
 
 // --- Reusable Layout Components ---
-const Sidebar = () => (
-  <aside style={styles.sidebar}>
-    <div>
-      <h2 style={{ textAlign: "center", marginBottom: "40px", color: "#fff" }}>
-        Learnify
-      </h2>
-      <nav>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li style={styles.navItem}>
-            <FaTachometerAlt /> <span style={styles.navText}>Dashboard</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaBook /> <span style={styles.navText}>Courses</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaChalkboardTeacher />{" "}
-            <span style={styles.navText}>Live Class room</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaEnvelope /> <span style={styles.navText}>Messages</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaStar /> <span style={styles.navText}>Reviews</span>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <button style={styles.logoutButton}>Log out</button>
-  </aside>
-);
-
-const Header = () => (
-  <header style={styles.header}>
-    <input
-      type="text"
-      placeholder="Search your language partner..."
-      style={styles.searchInput}
-    />
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <button style={styles.settingsButton}>Setting...</button>
-      <div style={styles.avatar}>A</div>
-    </div>
-  </header>
-);
-
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="#" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        <FaFacebook />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaLinkedin />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
-);
 
 // --- Messages Page Specific Components ---
 const ConversationList = ({ conversations, activeConvId, setActiveConvId }) => (
@@ -205,7 +140,7 @@ const MessagesPage = () => {
     <div style={styles.pageContainer}>
       <Sidebar />
       <div style={styles.mainWrapper}>
-        <Header />
+        <DashboardHeader />
         <main style={styles.mainContent}>
           <ConversationList
             conversations={conversations}

@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Course";
 import LiveClass from "./pages/LiveClass";
-import MessagesPage from "./components/Messages_page";
+import MessagesPage from "./pages/Messages_page";
 import Reviews from "./pages/Reviews";
 import PersonalDetails from "./pages/PersonalDetails";
 import Signup from "./pages/Signup";

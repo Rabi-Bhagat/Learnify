@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FaHistory, FaCommentDots, FaPencilAlt } from "react-icons/fa";
 import hirdentImage from "../assets/hirdent.jpg";
-import MessagesPage from "./Messages_page";
+import MessagesPage from "../pages/Messages_page";
 
 const statCards = [
   {
