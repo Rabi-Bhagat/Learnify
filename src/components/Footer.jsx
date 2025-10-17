@@ -1,5 +1,6 @@
 import React from "react";
 import { FaFacebook, FaLinkedin, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = ({ theme = "dark" }) => {
   const footerStyle = theme === "dark" ? styles.footerDark : styles.footerLight;
@@ -8,21 +9,36 @@ const Footer = ({ theme = "dark" }) => {
   return (
     <footer style={footerStyle}>
       <div>
-        <a href="/resources" style={linkStyle}>
+        <Link to="/Resources" style={linkStyle}>
           Resources
-        </a>
-        <a href="/legal" style={linkStyle}>
+        </Link>
+        <Link to="/Legal" style={linkStyle}>
           Legal
-        </a>
+        </Link>
       </div>
       <div style={styles.socialIcons}>
-        <a href="#" style={linkStyle}>
+        <a
+          href="https://facebook.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={linkStyle}
+        >
           <FaFacebook size={20} />
         </a>
-        <a href="#" style={linkStyle}>
+        <a
+          href="https://linkedin.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={linkStyle}
+        >
           <FaLinkedin size={20} />
         </a>
-        <a href="#" style={linkStyle}>
+        <a
+          href="https://twitter.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={linkStyle}
+        >
           <FaTwitter size={20} />
         </a>
       </div>

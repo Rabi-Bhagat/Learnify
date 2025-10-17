@@ -1,149 +1,181 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FcGoogle } from "react-icons/fc";
-import { FaCamera } from "react-icons/fa";
+import { FaEnvelope, FaLock } from "react-icons/fa"; // Using more standard login icons
+import { Link } from "react-router-dom"; // To link to the signup page
+import signinImage from "../assets/signin.png";
+
+// Custom hook to check screen width for responsiveness
+const useWindowWidth = () => {
+  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return width;
+};
 
 const Login = () => {
-  // State to hold the values of the input fields
-  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [language, setLanguage] = useState("");
+  const width = useWindowWidth();
+  const isMobile = width < 768;
 
-  // Handler for form submission
   const handleLogin = (e) => {
-    e.preventDefault(); // Prevents the page from reloading
-    console.log({
-      fullName,
-      email,
-      password,
-      language,
-    });
-    // Add your login logic here
+    e.preventDefault();
+    console.log({ email, password });
   };
 
   return (
     <div style={styles.container}>
-      {/* Left decorative panel */}
-      <div style={styles.leftPanel}>
-        <img src="/signin.png" alt="Decorative Art" style={styles.image} />
-      </div>
+      {/* Left decorative panel (hidden on mobile) */}
+      {!isMobile && (
+        <div style={styles.leftPanel}>
+          <img src={signinImage} alt="Decorative Art" style={styles.image} />
+        </div>
+      )}
 
       {/* Right login form panel */}
       <div style={styles.rightPanel}>
-        <form onSubmit={handleLogin} style={styles.form}>
-          <input
-            type="text"
-            placeholder="Enter your full name.."
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
-            style={styles.input}
-          />
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            style={styles.input}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            style={styles.input}
-          />
-          <div style={styles.inputWithIcon}>
-            <FaCamera style={styles.icon} />
-            <input
-              type="text"
-              placeholder="Choose your Language.."
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              style={{ ...styles.input, paddingLeft: "40px", width: "100%" }}
-            />
+        <div style={styles.formContainer}>
+          <h2 style={styles.title}>Welcome Back!</h2>
+          <form onSubmit={handleLogin}>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>
+                <FaEnvelope style={styles.icon} /> Email
+              </label>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                style={styles.input}
+                required
+              />
+            </div>
+            <div style={styles.inputGroup}>
+              <label style={styles.label}>
+                <FaLock style={styles.icon} /> Password
+              </label>
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                style={styles.input}
+                required
+              />
+            </div>
+            <button type="submit" style={styles.loginButton}>
+              Log In
+            </button>
+          </form>
+
+          {/* --- This is the new section you requested --- */}
+          <div style={styles.divider}>
+            <div style={styles.line}></div>
+            <span style={styles.dividerText}>or</span>
+            <div style={styles.line}></div>
           </div>
 
-          <button type="submit" style={styles.loginButton}>
-            Log in
+          <button style={styles.googleSignIn}>
+            <FcGoogle size={24} />
+            <span>Continue with Google</span>
           </button>
-        </form>
 
-        <div style={styles.googleSignIn}>
-          <FcGoogle size={30} />
+          <p style={styles.signupText}>
+            Don't have an account?{" "}
+            <Link to="/signup" style={styles.signupLink}>
+              Create one
+            </Link>
+          </p>
+          {/* --- End of new section --- */}
         </div>
       </div>
     </div>
   );
 };
 
-// CSS styles are organized in a single object for clarity
+// Updated and improved styles
 const styles = {
-  container: {
-    display: "flex",
-    width: "100%",
-    minHeight: "100vh",
-  },
-  leftPanel: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#f0f2f5", // A light grey background
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
+  container: { display: "flex", width: "100%", minHeight: "100vh" },
+  leftPanel: { flex: 1, display: "flex" },
+  image: { width: "100%", height: "100%", objectFit: "cover" },
   rightPanel: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#1e1e2d",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    padding: "20px",
+  },
+  formContainer: {
+    width: "100%",
+    maxWidth: "400px",
+    backgroundColor: "rgba(0, 0, 0, 0.2)",
     padding: "40px",
+    borderRadius: "10px",
   },
-  form: {
-    width: "100%",
-    maxWidth: "350px",
-    display: "flex",
-    flexDirection: "column",
+  title: {
+    color: "white",
+    textAlign: "center",
+    marginBottom: "30px",
+    fontSize: "2rem",
   },
-  input: {
-    backgroundColor: "#e0e0e0", // Light grey input background
-    border: "none",
-    borderRadius: "5px",
-    padding: "15px",
-    marginBottom: "20px",
-    fontSize: "1rem",
-    width: "100%",
-    boxSizing: "border-box", // Ensures padding doesn't affect width
-  },
-  inputWithIcon: {
-    position: "relative",
+  inputGroup: { marginBottom: "20px" },
+  label: {
     display: "flex",
     alignItems: "center",
-    marginBottom: "20px",
+    color: "#a9a9b2",
+    marginBottom: "8px",
+    fontSize: "0.9rem",
   },
-  icon: {
-    position: "absolute",
-    left: "15px",
-    color: "#555",
+  icon: { marginRight: "10px" },
+  input: {
+    width: "100%",
+    padding: "14px",
+    backgroundColor: "#27293d",
+    border: "1px solid #4a4a6a",
+    borderRadius: "8px",
+    fontSize: "1rem",
+    color: "white",
   },
   loginButton: {
-    backgroundColor: "#e0e0e0",
-    border: "none",
-    borderRadius: "5px",
+    width: "100%",
     padding: "15px",
-    fontSize: "1.2rem",
+    backgroundColor: "#6a0dad",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    fontSize: "1.1rem",
     fontWeight: "bold",
     cursor: "pointer",
-    marginBottom: "30px",
+    marginTop: "10px",
   },
+  divider: { display: "flex", alignItems: "center", margin: "25px 0" },
+  line: { flex: 1, height: "1px", backgroundColor: "#4a4a6a" },
+  dividerText: { margin: "0 15px", color: "#a9a9b2", fontSize: "0.9rem" },
   googleSignIn: {
+    width: "100%",
+    padding: "15px",
+    backgroundColor: "#fff",
+    color: "#333",
+    border: "1px solid #ddd",
+    borderRadius: "8px",
+    fontSize: "1rem",
     cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "10px",
   },
+  signupText: {
+    color: "#a9a9b2",
+    textAlign: "center",
+    marginTop: "20px",
+    fontSize: "0.9rem",
+  },
+  signupLink: { color: "#007bff", fontWeight: "bold", textDecoration: "none" },
 };
 
 export default Login;

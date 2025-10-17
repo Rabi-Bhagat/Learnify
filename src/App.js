@@ -13,6 +13,8 @@ import PersonalDetails from "./pages/PersonalDetails";
 import Signup from "./pages/Signup";
 import About from "./components/About";
 import Contact from "./components/Contact";
+import Resources from "./components/Resources";
+import Legal from "./components/Legal";
 function App() {
   return (
     <Routes>
@@ -27,6 +29,8 @@ function App() {
       <Route path="/Signup" element={<Signup />} />
       <Route path="/About" element={<About />} />
       <Route path="/Contact" element={<Contact />} />
+      <Route path="/Resources" element={<Resources />} />
+      <Route path="/Legal" element={<Legal />} />
     </Routes>
   );
 }
