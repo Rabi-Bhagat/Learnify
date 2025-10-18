@@ -3,6 +3,11 @@ import DashboardHeader from "../components/Dashboard_header";
 import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 // Import icons from Font Awesome
+
+import a from "../assets/a.jpg";
+import b from "../assets/b.jpg";
+import c from "../assets/c.jpg";
+
 import {
   FaTachometerAlt,
   FaBook,
@@ -22,19 +27,19 @@ const initialConversations = {
     id: "1",
     name: "Sujan Subedei",
     lastMessage: "Hi...",
-    avatar: "https://via.placeholder.com/40",
+    avatar: a,
   },
   2: {
     id: "2",
     name: "Rabi Bhagat",
     lastMessage: "K gardai xau sathi..",
-    avatar: "https://via.placeholder.com/40",
+    avatar: b,
   },
   3: {
     id: "3",
     name: "Aryan Jha",
     lastMessage: "Hello..",
-    avatar: "https://via.placeholder.com/40",
+    avatar: c,
   },
 };
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom"; // 1. IMPORT the Link component
-// import hirdentImage from "../assets/hirdent.jpg";
 import PersonalDetails from "./PersonalDetails";
 import Sidebar from "../components/Sidebar";
 import DashboardHeader from "../components/Dashboard_header";

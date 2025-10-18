@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react"; // 1. Import useState to manage the form
 // Import icons from Font Awesome
+import DashboardHeader from "../components/Dashboard_header";
+import Sidebar from "../components/Sidebar";
+import Footer from "../components/Footer";
 import {
   FaTachometerAlt,
   FaBook,
@@ -14,116 +17,35 @@ import {
   FaRegStar,
 } from "react-icons/fa";
 
-// --- Mock Data ---
-const reviewData = {
+// --- Mock Data (now using useState to be updatable) ---
+const initialReviewData = {
   overallRating: 4.7,
-  totalReviews: 125,
-  ratingBreakdown: [
-    { label: "Excellent", percentage: 89 },
-    { label: "Very good", percentage: 89 },
-    { label: "Average", percentage: 15 },
-    { label: "", percentage: 2 },
-    { label: "Average", percentage: 15 },
-  ],
-  teachingStyle: [
-    { label: "Teaching Style", score: 4.5 },
-    { label: "Teaching Style", score: 4.7 },
-    { label: "Teaching Style", score: 4.6 },
-    { label: "Teaching Style", score: 4.5 },
-  ],
+  totalReviews: 105,
   reviews: [
     {
       id: 1,
-      name: "John Doe",
+      name: "Aryan Jha",
       rating: 5,
-      text: "An amazing and very patient tutor. Learned so much in just a few sessions!",
+      text: "An amazing knowledge in Ai/Ml as well as English!",
     },
     {
       id: 2,
-      name: "Jane Smith",
+      name: "Hirdent Rajbanshi",
       rating: 4,
-      text: "Great teaching style. Would recommend to anyone looking to learn Spanish.",
+      text: "he is the super teacher.",
     },
   ],
 };
 
-// --- Reusable Layout Components ---
-const Sidebar = () => (
-  <aside style={styles.sidebar}>
-    <div>
-      <h2 style={{ textAlign: "center", marginBottom: "40px", color: "#fff" }}>
-        Learnify
-      </h2>
-      <nav>
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          <li style={styles.navItem}>
-            <FaTachometerAlt /> <span style={styles.navText}>Dashboard</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaBook /> <span style={styles.navText}>Courses</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaChalkboardTeacher />{" "}
-            <span style={styles.navText}>Live Class room</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaEnvelope /> <span style={styles.navText}>Messages</span>
-          </li>
-          <li style={styles.navItem}>
-            <FaStar /> <span style={styles.navText}>Reviews</span>
-          </li>
-        </ul>
-      </nav>
-    </div>
-    <button style={styles.logoutButton}>Log out</button>
-  </aside>
-);
-
-const Header = () => (
-  <header style={styles.header}>
-    <input
-      type="text"
-      placeholder="Search your language partner..."
-      style={styles.searchInput}
-    />
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <button style={styles.settingsButton}>Setting...</button>
-      <div style={styles.avatar}>A</div>
-    </div>
-  </header>
-);
-
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="#" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        <FaFacebook />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaLinkedin />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
-);
-
 // --- Page-Specific Components ---
 const StarRating = ({ rating }) => {
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.5;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
-    if (i <= rating) {
+    if (i <= fullStars) {
       stars.push(<FaStar key={i} color="#ffc107" />);
-    } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
+    } else if (i === fullStars + 1 && hasHalf) {
       stars.push(<FaStarHalfAlt key={i} color="#ffc107" />);
     } else {
       stars.push(<FaRegStar key={i} color="#ffc107" />);
@@ -144,67 +66,149 @@ const RatingBar = ({ label, percentage, score }) => (
   </div>
 );
 
-const ReviewsContent = () => (
-  <main style={styles.mainContent}>
-    <div style={styles.card}>
-      <h3 style={styles.cardTitle}>Overall Rating</h3>
-      <div style={styles.overallRating}>
-        <span style={styles.ratingValue}>{reviewData.overallRating}</span>
-        <div>
-          <span style={styles.ratingText}>Excellent</span>
-          <StarRating rating={reviewData.overallRating} />
-        </div>
-      </div>
-      <div style={styles.breakdownContainer}>
-        {/* Left Column */}
-        <div>
-          <RatingBar label="Excellent" percentage={89} />
-          <RatingBar label="Average" percentage={15} />
-          <RatingBar label="" percentage={2} />
-          <hr style={styles.divider} />
-          <RatingBar label="Teaching Style" score={4.5} />
-          <RatingBar label="Teaching Style" score={4.6} />
-        </div>
-        {/* Right Column */}
-        <div>
-          <RatingBar label="Very good" percentage={89} />
-          <RatingBar label="Average" percentage={15} />
-          <hr style={styles.divider} />
-          <RatingBar label="Teaching Style" score={4.7} />
-          <RatingBar label="Teaching Style" score={4.5} />
-        </div>
-      </div>
-    </div>
-    <div style={styles.card}>
-      <h3 style={styles.cardTitle}>Reviews:</h3>
-      {reviewData.reviews.map((review) => (
-        <div key={review.id} style={styles.reviewItem}>
-          <div style={styles.reviewHeader}>
-            <strong>{review.name}</strong>
-            <StarRating rating={review.rating} />
+// --- 2. Pass reviewData and the function to update it into the component ---
+const ReviewsContent = ({ reviewData, setReviewData }) => {
+  // 3. Create state for the new review input
+  const [newReviewName, setNewReviewName] = useState("");
+  const [newReviewRating, setNewReviewRating] = useState(5);
+  const [newReviewText, setNewReviewText] = useState("");
+
+  // 4. Handle form submission
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    if (!newReviewName.trim() || !newReviewText.trim()) return; // Don't submit empty reviews
+
+    const newReview = {
+      id: Date.now(), // Unique ID
+      name: newReviewName,
+      rating: newReviewRating,
+      text: newReviewText,
+    };
+
+    // Update the reviews list and total
+    setReviewData((prev) => ({
+      ...prev,
+      totalReviews: prev.totalReviews + 1,
+      reviews: [newReview, ...prev.reviews], // Add the new review to the top of the list
+    }));
+
+    // Clear the input fields
+    setNewReviewName("");
+    setNewReviewRating(5);
+    setNewReviewText("");
+  };
+
+  return (
+    <main style={styles.mainContent}>
+      <div style={styles.card}>
+        <h3 style={styles.cardTitle}>Overall Rating</h3>
+        <div style={styles.overallRating}>
+          <span style={styles.ratingValue}>{reviewData.overallRating}</span>
+          <div>
+            <span style={styles.ratingText}>Excellent</span>
+            <StarRating rating={reviewData.overallRating} />
           </div>
-          <p style={styles.reviewText}>{review.text}</p>
         </div>
-      ))}
-    </div>
-  </main>
-);
+        <div style={styles.breakdownContainer}>
+          {/* Left Column */}
+          <div>
+            <RatingBar label="Excellent" percentage={89} />
+            <RatingBar label="Very good" percentage={15} />
+            <RatingBar label="" percentage={2} />
+            <hr style={styles.divider} />
+            <RatingBar label="Teaching Style" score={4.5} />
+            <RatingBar label="Teaching Style" score={4.6} />
+          </div>
+          {/* Right Column */}
+          <div>
+            <RatingBar label="Very good" percentage={89} />
+            <RatingBar label="Average" percentage={15} />
+            <hr style={styles.divider} />
+            <RatingBar label="Teaching Style" score={4.7} />
+            <RatingBar label="Teaching Style" score={4.5} />
+          </div>
+        </div>
+      </div>
+      {/* --- ADDED REVIEW INPUT FIELD --- */}
+      <div style={styles.card}>
+        <h3 style={styles.cardTitle}>Leave a Review</h3>
+        <form onSubmit={handleReviewSubmit}>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Name</label>
+            <input
+              type="text"
+              placeholder="Your Name"
+              value={newReviewName}
+              onChange={(e) => setNewReviewName(e.target.value)}
+              style={styles.input}
+              required
+            />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Rating (1-5)</label>
+            <input
+              type="number"
+              min="1"
+              max="5"
+              step="0.5"
+              value={newReviewRating}
+              onChange={(e) => setNewReviewRating(Number(e.target.value))}
+              style={styles.input}
+              required
+            />
+          </div>
+          <div style={styles.formGroup}>
+            <label style={styles.label}>Review</label>
+            <textarea
+              style={styles.reviewTextarea}
+              placeholder="Write your review here..."
+              value={newReviewText}
+              onChange={(e) => setNewReviewText(e.target.value)}
+              required
+            ></textarea>
+          </div>
+          <button type="submit" style={styles.submitButton}>
+            Submit Review
+          </button>
+        </form>
+      </div>
+      {/* --- ADDED REVIEWS DISPLAY --- */}
+      <div style={styles.card}>
+        <h3 style={styles.cardTitle}>
+          Customer Reviews ({reviewData.totalReviews})
+        </h3>
+        {reviewData.reviews.map((review) => (
+          <div key={review.id} style={styles.reviewItem}>
+            <div style={styles.reviewHeader}>
+              <span style={styles.reviewName}>{review.name}</span>
+              <StarRating rating={review.rating} />
+            </div>
+            <p style={styles.reviewText}>{review.text}</p>
+          </div>
+        ))}
+      </div>
+    </main>
+  );
+};
 
 // --- Main Page Component ---
 const ReviewsPage = () => {
+  // 5. Use useState to manage the review data so it can be updated
+  const [reviewData, setReviewData] = useState(initialReviewData);
+
   return (
     <div style={styles.pageContainer}>
       <Sidebar />
       <div style={styles.mainWrapper}>
-        <Header />
-        <ReviewsContent />
+        <DashboardHeader />
+        {/* 6. Pass the data and the setter function down to the content component */}
+        <ReviewsContent reviewData={reviewData} setReviewData={setReviewData} />
         <Footer />
       </div>
     </div>
   );
 };
 
-// --- Styles ---
 const styles = {
   pageContainer: {
     display: "flex",
@@ -212,68 +216,7 @@ const styles = {
     backgroundColor: "#1e1e2d",
     color: "#fff",
   },
-  sidebar: {
-    width: "250px",
-    backgroundColor: "#27293d",
-    padding: "20px",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    borderRight: "1px solid #333",
-  },
-  navItem: {
-    display: "flex",
-    alignItems: "center",
-    padding: "15px",
-    cursor: "pointer",
-    borderRadius: "8px",
-    color: "#a9a9b2",
-  },
-  navText: { marginLeft: "15px" },
-  logoutButton: {
-    backgroundColor: "#444",
-    border: "1px solid #555",
-    color: "#ff4a55",
-    padding: "10px",
-    borderRadius: "8px",
-    cursor: "pointer",
-  },
   mainWrapper: { flex: 1, display: "flex", flexDirection: "column" },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "15px 30px",
-    backgroundColor: "#27293d",
-    borderBottom: "1px solid #333",
-  },
-  searchInput: {
-    border: "1px solid #4a4a6a",
-    backgroundColor: "transparent",
-    color: "#fff",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    width: "300px",
-  },
-  settingsButton: {
-    background: "none",
-    border: "1px solid #4a4a6a",
-    color: "#fff",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    margin: "0 20px",
-  },
-  avatar: {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    backgroundColor: "#4a4a6a",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold",
-  },
   mainContent: {
     flex: 1,
     padding: "20px",
@@ -326,16 +269,49 @@ const styles = {
     alignItems: "center",
     marginBottom: "5px",
   },
+  reviewName: { fontWeight: "bold" },
   reviewText: { color: "#a9a9b2", margin: 0, lineHeight: 1.6 },
-  footer: {
-    padding: "20px 30px",
-    backgroundColor: "#27293d",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderTop: "1px solid #333",
+  // --- ADDED STYLES FOR THE NEW INPUT FIELD ---
+  formGroup: {
+    marginBottom: "15px",
   },
-  footerLink: { color: "#999", textDecoration: "none", margin: "0 10px" },
+  label: {
+    display: "block",
+    marginBottom: "5px",
+    color: "#a9a9b2",
+    fontSize: "0.9rem",
+  },
+  input: {
+    width: "100%",
+    height: "40px",
+    backgroundColor: "#1e1e2d",
+    border: "1px solid #4a4a6a",
+    borderRadius: "8px",
+    padding: "10px",
+    color: "#fff",
+    fontSize: "1rem",
+  },
+  reviewTextarea: {
+    width: "100%",
+    minHeight: "100px",
+    backgroundColor: "#1e1e2d",
+    border: "1px solid #4a4a6a",
+    borderRadius: "8px",
+    padding: "10px",
+    color: "#fff",
+    fontSize: "1rem",
+    resize: "vertical",
+  },
+  submitButton: {
+    backgroundColor: "#6a0dad",
+    color: "white",
+    border: "none",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontSize: "1rem",
+    fontWeight: "bold",
+  },
 };
 
 export default ReviewsPage;
