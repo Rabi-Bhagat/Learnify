@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Dashboard_header";
 import Footer from "../components/Footer";
-
+import { FaArrowLeft } from "react-icons/fa";
 const coursesData = [
   {
     title: "Conversational Spanish",
