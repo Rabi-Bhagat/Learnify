@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-
-// Import images for the other participants
 import mainUserImage from "../assets/e.jpg";
 import user2Image from "../assets/a.jpg";
 import user3Image from "../assets/b.jpg";
@@ -22,7 +20,7 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 
-// --- SOURCE 2: Create a list of your other participants ---
+// Create a list of your other participants
 const otherParticipants = [
   { id: 2, image: user2Image },
   { id: 3, image: user3Image },

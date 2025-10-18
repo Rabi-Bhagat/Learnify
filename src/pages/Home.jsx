@@ -217,26 +217,4 @@ const styles = {
     backgroundColor: "transparent",
     color: "#6a0dad",
   },
-
-  footer: {
-    backgroundColor: "#333",
-    color: "white",
-    padding: "20px 80px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  footerLink: {
-    color: "white",
-    textDecoration: "none",
-    marginRight: "20px",
-    fontSize: "1rem",
-  },
-  socialIcons: {
-    display: "flex",
-    gap: "15px",
-  },
-  socialIconLink: {
-    color: "white",
-  },
 };

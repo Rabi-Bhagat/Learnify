@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// Import icons from Font Awesome
-import { FaFacebook, FaLinkedin, FaTwitter, FaArrowLeft } from "react-icons/fa";
+import Header from "../components/Dashboard_header";
+import Footer from "../components/Footer";
 
-// --- Mock Data for the Courses ---
 const coursesData = [
   {
     title: "Conversational Spanish",
@@ -42,48 +41,7 @@ const coursesData = [
   },
 ];
 
-// --- Reusable Components ---
-const Header = () => (
-  <header style={styles.header}>
-    <div /> {/* Empty div for spacing */}
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <input
-        type="text"
-        placeholder="Search your language partner..."
-        style={styles.searchInput}
-      />
-      <button style={styles.settingsButton}>Setting...</button>
-      <div style={styles.avatar}>A</div>
-    </div>
-  </header>
-);
-
-const Footer = () => (
-  <footer style={styles.footer}>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        Resources
-      </a>
-      <a href="#" style={styles.footerLink}>
-        Legal
-      </a>
-    </div>
-    <div>
-      <a href="#" style={styles.footerLink}>
-        <FaFacebook />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaLinkedin />
-      </a>
-      <a href="#" style={styles.footerLink}>
-        <FaTwitter />
-      </a>
-    </div>
-  </footer>
-);
-
 const CourseCard = ({ course }) => {
-  // Helper to get color based on level
   const getLevelStyle = (level) => {
     const styles = {
       backgroundColor: "#d3d3d3",
@@ -121,7 +79,7 @@ const CourseCard = ({ course }) => {
   );
 };
 
-// --- Main Page Component ---
+//  Main Page Component
 const CoursesPage = () => {
   return (
     <div style={styles.pageContainer}>
@@ -141,7 +99,7 @@ const CoursesPage = () => {
   );
 };
 
-// --- Styles ---
+//  Styles
 const styles = {
   pageContainer: {
     display: "flex",
@@ -149,42 +107,7 @@ const styles = {
     minHeight: "100vh",
     backgroundColor: "#1e1e2d",
   },
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "15px 30px",
-    backgroundColor: "#27293d",
-    borderBottom: "1px solid #333",
-  },
-  searchInput: {
-    border: "1px solid #4a4a6a",
-    backgroundColor: "transparent",
-    color: "#fff",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    width: "300px",
-  },
-  settingsButton: {
-    background: "none",
-    border: "1px solid #4a4a6a",
-    color: "#fff",
-    padding: "10px 15px",
-    borderRadius: "8px",
-    cursor: "pointer",
-    margin: "0 20px",
-  },
-  avatar: {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    backgroundColor: "#4a4a6a",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold",
-    color: "#fff",
-  },
+
   mainContent: { flex: 1, padding: "20px 50px" },
   backButton: {
     background: "none",
@@ -260,20 +183,10 @@ const styles = {
     borderRadius: "8px",
     cursor: "pointer",
     marginBottom: "20px",
-    display: "inline-flex", // Use inline-flex to keep it from stretching full-width
+    display: "inline-flex",
     alignItems: "center",
-    textDecoration: "none", // Remove the default underline from the link
+    textDecoration: "none",
   },
-
-  footer: {
-    padding: "20px 30px",
-    backgroundColor: "#27293d",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderTop: "1px solid #333",
-  },
-  footerLink: { color: "#999", textDecoration: "none", margin: "0 10px" },
 };
 
 export default CoursesPage;

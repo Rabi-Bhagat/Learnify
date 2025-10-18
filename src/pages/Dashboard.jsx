@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; // 1. IMPORT the Link component
+import { Link } from "react-router-dom";
 import PersonalDetails from "./PersonalDetails";
 import Sidebar from "../components/Sidebar";
 import DashboardHeader from "../components/Dashboard_header";
@@ -173,7 +173,7 @@ const styles = {
     padding: "20px",
     borderRadius: "10px",
   },
-  // 3. ADD a style for the Link to remove the underline and inherit color
+
   profileLink: {
     textDecoration: "none",
     color: "inherit",
@@ -183,7 +183,7 @@ const styles = {
     alignItems: "center",
     gap: "15px",
     marginBottom: "20px",
-    cursor: "pointer", // Add a pointer cursor to indicate it's clickable
+    cursor: "pointer",
     backgroundColor: "#3a3a5a",
   },
   profileImage: {
