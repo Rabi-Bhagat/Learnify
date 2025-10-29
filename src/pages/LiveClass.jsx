@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import mainUserImage from "../assets/e.jpg";
@@ -15,9 +15,8 @@ import {
   FaHandPaper,
   FaPhoneSlash,
   FaPlus,
-  FaFacebook,
-  FaLinkedin,
-  FaTwitter,
+  FaMicrophone,
+  FaVideo,
 } from "react-icons/fa";
 
 // Create a list of your other participants
@@ -65,21 +64,98 @@ const VideoParticipant = ({ isMain = false, imageSrc }) => (
   </div>
 );
 
-const ControlBar = () => (
+// Add Toast component for notifications
+const Toast = ({ message, onClose }) => (
+  <div
+    style={{
+      position: "fixed",
+      bottom: "20px",
+      right: "20px",
+      backgroundColor: "#333",
+      color: "#fff",
+      padding: "12px 24px",
+      borderRadius: "4px",
+      animation: "fadeIn 0.3s",
+      zIndex: 1000,
+    }}
+  >
+    {message}
+    <button
+      onClick={onClose}
+      style={{
+        marginLeft: "10px",
+        background: "none",
+        border: "none",
+        color: "#fff",
+        cursor: "pointer",
+      }}
+    >
+      ×
+    </button>
+  </div>
+);
+
+// Update ControlBar component
+const ControlBar = ({
+  muted,
+  cameraOff,
+  screenSharing,
+  handRaised,
+  onToggleMute,
+  onToggleCamera,
+  onToggleScreenShare,
+  onToggleHand,
+  onEndCall,
+}) => (
   <div style={styles.controlBar}>
-    <button style={styles.controlButton}>
-      <FaMicrophoneSlash /> Mute
+    <button
+      onClick={onToggleMute}
+      style={{
+        ...styles.controlButton,
+        backgroundColor: muted ? "#444" : "transparent",
+      }}
+    >
+      {muted ? <FaMicrophone /> : <FaMicrophoneSlash />}
+      {muted ? "Unmute" : "Mute"}
     </button>
-    <button style={styles.controlButton}>
-      <FaVideoSlash /> Video Off
+
+    <button
+      onClick={onToggleCamera}
+      style={{
+        ...styles.controlButton,
+        backgroundColor: cameraOff ? "#444" : "transparent",
+      }}
+    >
+      {cameraOff ? <FaVideo /> : <FaVideoSlash />}
+      {cameraOff ? "Start Video" : "Stop Video"}
     </button>
-    <button style={styles.controlButton}>
-      <FaDesktop /> Screen Share
+
+    <button
+      onClick={onToggleScreenShare}
+      style={{
+        ...styles.controlButton,
+        backgroundColor: screenSharing ? "#444" : "transparent",
+      }}
+    >
+      <FaDesktop />
+      {screenSharing ? "Stop Share" : "Share Screen"}
     </button>
-    <button style={styles.controlButton}>
-      <FaHandPaper /> Raise Hand
+
+    <button
+      onClick={onToggleHand}
+      style={{
+        ...styles.controlButton,
+        backgroundColor: handRaised ? "#444" : "transparent",
+      }}
+    >
+      <FaHandPaper />
+      {handRaised ? "Lower Hand" : "Raise Hand"}
     </button>
-    <button style={{ ...styles.controlButton, ...styles.endCallButton }}>
+
+    <button
+      onClick={onEndCall}
+      style={{ ...styles.controlButton, ...styles.endCallButton }}
+    >
       <FaPhoneSlash /> End Call
     </button>
   </div>
@@ -138,32 +214,187 @@ const ChatPanel = () => {
 
 // --- Main Page Component ---
 const LiveClass = () => {
+  const [muted, setMuted] = useState(false);
+  const [cameraOff, setCameraOff] = useState(false);
+  const [screenSharing, setScreenSharing] = useState(false);
+  const [handRaised, setHandRaised] = useState(false);
+  const [inCall, setInCall] = useState(true);
+  const [toast, setToast] = useState(null);
+  const videoRef = useRef(null);
+  const screenStreamRef = useRef(null);
+
+  // Show notification
+  const showToast = (message) => {
+    setToast(message);
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  // Handle mic toggle
+  const handleToggleMute = () => {
+    setMuted((prev) => !prev);
+    showToast(!muted ? "Microphone muted" : "Microphone unmuted");
+  };
+
+  // Handle camera toggle
+  const handleToggleCamera = () => {
+    setCameraOff((prev) => !prev);
+    showToast(!cameraOff ? "Camera turned off" : "Camera turned on");
+  };
+
+  // Handle screen sharing
+  const handleToggleScreenShare = async () => {
+    try {
+      if (screenSharing) {
+        if (screenStreamRef.current) {
+          screenStreamRef.current.getTracks().forEach((track) => track.stop());
+        }
+        setScreenSharing(false);
+        showToast("Screen sharing stopped");
+      } else {
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+        });
+        screenStreamRef.current = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+        setScreenSharing(true);
+        showToast("Screen sharing started");
+
+        // Handle when user stops sharing via browser controls
+        stream.getVideoTracks()[0].onended = () => {
+          setScreenSharing(false);
+          showToast("Screen sharing stopped");
+        };
+      }
+    } catch (err) {
+      console.error("Screen sharing error:", err);
+      showToast("Failed to start screen sharing");
+    }
+  };
+
+  // Handle hand raise
+  const handleToggleHand = () => {
+    setHandRaised((prev) => !prev);
+    showToast(!handRaised ? "Hand raised" : "Hand lowered");
+  };
+
+  // Handle end call
+  const handleEndCall = () => {
+    if (screenStreamRef.current) {
+      screenStreamRef.current.getTracks().forEach((track) => track.stop());
+    }
+    setInCall(false);
+    showToast("Call ended");
+  };
+
+  // Handle rejoin
+  const handleRejoin = () => {
+    setInCall(true);
+    showToast("Rejoined the call");
+  };
+
   return (
     <div style={styles.pageContainer}>
       <Header />
       <main style={styles.mainContent}>
-        {/* Left Panel: Video Conference Area */}
         <div style={styles.videoPanel}>
-          {/* SOURCE 3: The main participant uses their specific image */}
-          <VideoParticipant isMain={true} imageSrc={mainUserImage} />
-          <div style={styles.thumbnailContainer}>
-            {/* Generating 4 unique participants from your list */}
-            {otherParticipants.map((p) => (
-              <VideoParticipant key={p.id} imageSrc={p.image} />
-            ))}
-          </div>
-          <ControlBar />
-        </div>
+          {inCall ? (
+            <>
+              <div style={styles.mainVideo}>
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                    display: cameraOff ? "none" : "block",
+                  }}
+                />
+                {cameraOff && (
+                  <div style={styles.cameraOffPlaceholder}>
+                    <img
+                      src={mainUserImage}
+                      alt="profile"
+                      style={{
+                        width: "120px",
+                        height: "120px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+              <div style={styles.thumbnailContainer}>
+                {otherParticipants.map((p) => (
+                  <VideoParticipant key={p.id} imageSrc={p.image} />
+                ))}
+              </div>
+            </>
+          ) : (
+            <div style={styles.callEndedScreen}>
+              <h2>Call Ended</h2>
+              <button onClick={handleRejoin} style={styles.rejoinButton}>
+                Rejoin Call
+              </button>
+            </div>
+          )}
 
-        {/* Right Panel: Chat Area */}
+          <ControlBar
+            muted={muted}
+            cameraOff={cameraOff}
+            screenSharing={screenSharing}
+            handRaised={handRaised}
+            onToggleMute={handleToggleMute}
+            onToggleCamera={handleToggleCamera}
+            onToggleScreenShare={handleToggleScreenShare}
+            onToggleHand={handleToggleHand}
+            onEndCall={handleEndCall}
+          />
+        </div>
         <ChatPanel />
       </main>
       <Footer />
+      {toast && <Toast message={toast} onClose={() => setToast(null)} />}
     </div>
   );
 };
 
-// --- Styles ---
+// Add new styles
+const newStyles = {
+  cameraOffPlaceholder: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#333",
+    borderRadius: "8px",
+  },
+  callEndedScreen: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#fff",
+  },
+  rejoinButton: {
+    backgroundColor: "#007bff",
+    color: "#fff",
+    border: "none",
+    padding: "12px 24px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    marginTop: "20px",
+  },
+};
+
+// Update existing styles
 const styles = {
   pageContainer: {
     display: "flex",
@@ -302,6 +533,7 @@ const styles = {
     cursor: "pointer",
     fontWeight: "bold",
   },
+  ...newStyles,
 };
 
 export default LiveClass;

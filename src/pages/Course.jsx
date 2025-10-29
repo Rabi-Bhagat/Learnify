@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Header from "../components/Dashboard_header";
 import Footer from "../components/Footer";
 import { FaArrowLeft } from "react-icons/fa";
-const coursesData = [
+export const coursesData = [
   {
     title: "Conversational Spanish",
     subject: "Spanish",
@@ -41,7 +41,7 @@ const coursesData = [
   },
 ];
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course, index }) => {
   const getLevelStyle = (level) => {
     const styles = {
       backgroundColor: "#d3d3d3",
@@ -71,8 +71,18 @@ const CourseCard = ({ course }) => {
           {course.level}
         </span>
         <div style={styles.cardActions}>
-          <button style={styles.enrollButton}>Enroll Now</button>
-          <button style={styles.detailsButton}>View Details</button>
+          <Link
+            to={`/courses/enroll/${index}`}
+            style={{ textDecoration: "none", flex: 1 }}
+          >
+            <button style={styles.enrollButton}>Enroll Now</button>
+          </Link>
+          <Link
+            to={`/courses/details/${index}`}
+            style={{ textDecoration: "none", flex: 1 }}
+          >
+            <button style={styles.detailsButton}>View Details</button>
+          </Link>
         </div>
       </div>
     </div>
@@ -90,7 +100,7 @@ const CoursesPage = () => {
         </Link>
         <div style={styles.courseGrid}>
           {coursesData.map((course, index) => (
-            <CourseCard key={index} course={course} />
+            <CourseCard key={index} course={course} index={index} />
           ))}
         </div>
       </main>

@@ -98,7 +98,9 @@ const DashboardMainComponent = () => (
               <li key={i}>{feature}</li>
             ))}
           </ul>
-          <button style={styles.selectPlanButton}>Select This Plan</button>
+          <Link to={`/plan/${index}`} style={{ textDecoration: "none" }}>
+            <button style={styles.selectPlanButton}>Select This Plan</button>
+          </Link>
         </div>
       ))}
     </section>

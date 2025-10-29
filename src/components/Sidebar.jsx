@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom"; // Use NavLink for active styling
+import { NavLink, useNavigate } from "react-router-dom"; // Add useNavigate
 import {
   FaTachometerAlt,
   FaBook,
@@ -18,38 +18,48 @@ const navLinks = [
   { to: "/reviews", icon: <FaStar />, text: "Reviews" },
 ];
 
-const Sidebar = () => (
-  <aside style={styles.sidebar}>
-    <div style={styles.sidebarTop}>
-      <h2 style={styles.logo}>Learnify</h2>
-      <nav>
-        {/* We map over the links and create a NavLink for each one */}
-        {navLinks.map((link) => (
-          <NavLink
-            to={link.to}
-            key={link.text}
-            // This style prop will apply the 'activeNavItem' style when the link is active
-            style={({ isActive }) =>
-              isActive ? styles.activeNavItem : styles.navItem
-            }
-          >
-            {link.icon}
-            <span style={styles.navText}>{link.text}</span>
-          </NavLink>
-        ))}
-      </nav>
-    </div>
+const Sidebar = () => {
+  const navigate = useNavigate();
 
-    <a href="Dashboard" style={styles.logoutButton}>
-      <FaSignOutAlt />
-      <span style={styles.navText}> Log Out</span>
-    </a>
+  const handleLogout = () => {
+    // Clear any stored user data/tokens
+    localStorage.removeItem("userToken"); // If you're using token authentication
+    localStorage.clear(); // Or clear all stored data
 
-    {/* <button style={styles.logoutButton}>
-      <FaSignOutAlt /> <span style={styles.navText}>Log out</span>
-    </button> */}
-  </aside>
-);
+    // Show logout notification (optional)
+    alert("Successfully logged out");
+
+    // Redirect to login page
+    navigate("/login");
+  };
+
+  return (
+    <aside style={styles.sidebar}>
+      <div style={styles.sidebarTop}>
+        <h2 style={styles.logo}>Learnify</h2>
+        <nav>
+          {navLinks.map((link) => (
+            <NavLink
+              to={link.to}
+              key={link.text}
+              style={({ isActive }) =>
+                isActive ? styles.activeNavItem : styles.navItem
+              }
+            >
+              {link.icon}
+              <span style={styles.navText}>{link.text}</span>
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+
+      <button onClick={handleLogout} style={styles.logoutButton}>
+        <FaSignOutAlt />
+        <span style={styles.navText}>Log Out</span>
+      </button>
+    </aside>
+  );
+};
 
 // The missing styles object
 const styles = {

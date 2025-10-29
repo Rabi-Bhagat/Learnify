@@ -5,7 +5,9 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Courses from "./pages/Course";
+import CoursesPage from "./pages/Course";
+import Enroll from "./pages/Enroll";
+import CourseDetails from "./pages/CourseDetails";
 import LiveClass from "./pages/LiveClass";
 import MessagesPage from "./pages/Messages_page";
 import Reviews from "./pages/Reviews";
@@ -17,6 +19,7 @@ import Resources from "./components/Resources";
 import Legal from "./components/Legal";
 import Footer from "./components/Footer";
 import Sidebar from "./components/Sidebar";
+import Selectthisplan from "./components/Selectthisplan";
 
 function App() {
   return (
@@ -24,7 +27,9 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/courses" element={<Courses />} />
+      <Route path="/courses" element={<CoursesPage />} />
+      <Route path="/courses/enroll/:id" element={<Enroll />} />
+      <Route path="/courses/details/:id" element={<CourseDetails />} />
       <Route path="/live-class" element={<LiveClass />} />
       <Route path="/messages" element={<MessagesPage />} />
       <Route path="/reviews" element={<Reviews />} />
@@ -34,6 +39,7 @@ function App() {
       <Route path="/Contact" element={<Contact />} />
       <Route path="/Resources" element={<Resources />} />
       <Route path="/Legal" element={<Legal />} />
+      <Route path="/plan/:id" element={<Selectthisplan />} />
     </Routes>
   );
 }
