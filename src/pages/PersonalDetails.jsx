@@ -54,10 +54,10 @@ const PersonalDetailsContent = () => (
         />
         <div style={styles.profileDetailsBox}>
           <p>
-            <strong>Name:</strong> Himbert Rugha...
+            <strong>Name:</strong> Hirdent Rajbanshi
           </p>
           <p>
-            <strong>Fluent in:</strong> Nepali, English
+            <strong>Fluent in:</strong> Nepali, English chinese
           </p>
           <p>
             <strong>Learning:</strong> Spanish
